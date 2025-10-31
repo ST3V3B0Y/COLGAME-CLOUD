@@ -1,33 +1,59 @@
-// import express from 'express';
-import gameSchema from '../models/Game.js';
+import Game from '../models/Game.js';
 
-const getGames = (req, res) => {
-// Lógica para obtener todos los juegos
-    res.send('Obtener todos los juegos');
+// Controladores para manejar las operaciones relacionadas con los juegos
+
+// Obtener todos los juegos
+const getGames = async (req, res) => {
+    try {
+        const games = await Game.find();
+        res.status(200).json(games);
+    } catch (error) {
+        res.status(500).json({ message: "Error al obtener los juegos", error });
+    }
 };
 
-const getGameById = (req, res) => {
-// Lógica para obtener un juego por ID
-    const { id } = req.params;
-    res.send(`Obtener juego con ID: ${id}`);
+// Obtener un juego por ID
+const getGameById = async (req, res) => {
+    try {
+        const game = await Game.findById(req.params.id);
+        if (!game) return res.status(404).jason({ message: "Juego no encontrado" });
+        res.status(200).json(game);
+    } catch (error) {
+        res.status(500).json({ message: "Error al buscar el juego", error });
+    }
 };
 
-const createGame = (req, res) => {
-// Lógica para crear un nuevo juego
-    res.send('Crear un nuevo juego');
+// Crear un nuevo juego
+const createGame = async (req, res) => {
+    try {
+        const newGame = new Game(req.body);
+        const savedGame = await newGame.save();
+        res.status(201).json(savedGame);
+    } catch (error) {
+        res.status(500).json({ message: "Error al crear el juego", error });
+    }
 };
 
-
-const updateGame = (req, res) => {
-// Lógica para actualizar un juego existente
-    const { id } = req.params;
-    res.send(`Actualizar juego con ID: ${id}`);
+// Actualizar un juego existente
+const updateGame = async (req, res) => {
+    try {
+        const updateGame = await Game.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!updateGame) return res.status(404).json({ message: "Juego no encontrado" });
+        res.status(200).json(updateGame);
+    } catch (error) {
+        res.status(500).json({ message: "Error al actualizar el juego", error });
+ }
 }
 
-const deleteGame = (req, res) => {
-// Lógica para eliminar un juego
-    const { id } = req.params;
-    res.send(`Eliminar juego con ID: ${id}`);
-}
+// Eliminar un juego
+const deleteGame = async (req, res) => {
+    try {
+        const deletedGame = await Game.findByIdAndDelete(req.params.id);
+        if (!deletedGame) return res.status(404).json({ message: "Juego no encontrado" });
+        res.status(200).json({ message: "Juego eliminado correctamente" });
+    } catch (error) {
+        res.status(500).json({ message: "Error al eliminar el juego", error });
+    }
+};
 
 export { getGames, getGameById, createGame, updateGame, deleteGame };

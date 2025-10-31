@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const gameSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    titulo: { type: String, requires: true },
+    titulo: { type: String, required: true },
     genero: String,
     plataforma: String,
     añoLanzamiento: Number,
@@ -16,5 +16,4 @@ const gameSchema = new mongoose.Schema({
 const Game = mongoose.model('Game', gameSchema);
 
 export default Game;
-
 

@@ -1,21 +1,21 @@
 import express from 'express';
-import { getReseñas, getReseñaById, createReseña, updateReseña, deleteReseña } from '../controllers/reviewController.js';
+import { getReview, getReviewById, createReview, updateReview, deleteReview } from '../controllers/reviewController.js';
 
 const router = express.Router();
 
 // Ruta para obtener todas las reseñas
-router.get('/reviews', getReseñas);
+router.get('/', getReview);
 
 // Ruta para obtener una reseña por ID
-router.get('/reviews/:id', getReseñaById);
+router.get('/:id', getReviewById);
 
 // Ruta para crear una nueva reseña
-router.post('/reviews', createReseña);
+router.post('/', createReview);
 
 // Ruta para actualizar una reseña existente
-router.put('/reviews/:id', updateReseña);
+router.put('/:id', updateReview);
 
 // Ruta para eliminar una reseña
-router.delete('/reviews/:id', deleteReseña);
+router.delete('/:id', deleteReview);
 
 export default router;
