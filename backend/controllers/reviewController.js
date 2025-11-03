@@ -1,5 +1,4 @@
 import Review from '../models/Review.js';
-import { body, validationResult } from 'express-validator';
 
 // Controladores para manejar las operaciones relacionadas con las reseñas
 
