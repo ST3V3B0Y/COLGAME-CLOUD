@@ -1,14 +1,20 @@
 import Review from '../models/Review.js';
+import { body, validationResult } from 'express-validator';
 
 // Controladores para manejar las operaciones relacionadas con las reseñas
 
 // Obtener todas las reseñas
 const getReview = async (req, res) => {
     try {
-        const review = await Review.find().populate('juegoId', "titulo genero");
+        const review = await Review.find().populate('juegoId', "titulo genero plataforma");
         res.status(200).json(review);
     } catch (error) {
-        res.status(500).json({ message: "Error al obtener las reseñas", error });
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al obtener las reseñas",
+            error: error.message,
+            details: error
+        });
     }
 };
 
@@ -19,7 +25,31 @@ const getReviewById = async (req, res) => {
         if (!review) return res.status(404).json({ message: "Reseña no encontrada" });
         res.status(200).json(review);
     } catch (error) {
-        res.status(500).json({ message: "Error al buscar la reseña", error });
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al buscar la reseña por ID",
+            error: error.message,
+            details: error
+        });
+    }
+};
+
+// Obtener una reseña por un juego específico
+const getReviewByGameId = async (req, res) => {
+    try {
+        const { juegoId } = req.params;
+        const review = await Review.findOne({ juegoId }).populate('juegoId', "titulo genero plataforma");
+        if (!review || review.length === 0) {
+            return res.status(404).json({ message: "No se encontraron reseñas para este juego" });
+        }
+        res.status(200).json(review);
+    } catch (error) {
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al buscar la reseña por el ID del juego",
+            error: error.message,
+            details: error
+        });
     }
 };
 
@@ -30,7 +60,12 @@ const createReview = async (req, res) => {
         const savedReview = await newReview.save();
         res.status(201).json(savedReview);
     } catch (error) {
-        res.status(500).json({ message: "Error al crear la reseña", error });
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al crear la reseña",
+            error: error.message,
+            details: error
+        }); 
     }
 }
 
@@ -41,7 +76,12 @@ const updateReview = async (req, res) => {
         if (!updateReview) return res.status(404).json({ message: "Reseña no encontrada" });
         res.status(200).json(updateReview);
     } catch (error) {
-        res.status(500).json({ message: "Error al actualizar la reseña", error });
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al actualizar la reseña",
+            error: error.message,
+            details: error
+        });
     }
 };
 
@@ -52,8 +92,13 @@ const deleteReview = async (req, res) => {
         if (!deletedReview) return res.status(404).json({ message: "Reseña no encontrada" });
         res.status(200).json({ message: "Reseña eliminada correctamente" });
     } catch (error) {
-        res.status(500).json({ message: "Error al eliminar la reseña", error });
+        console.error('Error completo:', error);
+        res.status(500).json({
+            message: "Error al eliminar la reseña",
+            error: error.message,
+            details: error
+        });
     }
 };
 
-export { getReview, getReviewById, createReview, updateReview, deleteReview };
+export { getReview, getReviewById, getReviewByGameId, createReview, updateReview, deleteReview };

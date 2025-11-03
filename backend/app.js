@@ -10,15 +10,18 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use(morgan("dev"));
+// Middlewares
+app.use(cors()); //Habilita CORS para permitir solicitudes desde otros dominios
+app.use(express.json()); //Parsea el cuerpo de las solicitudes como JSON
+app.use(morgan("dev")); //Permite ver las peticiones en la consola
 
+// Rutas
 app.use("/api/games", gameRoutes);
 app.use("/api/reviews", reviewRoutes);
 
+// Conexión a la base de datos MongoDB Atlas
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("✅ Conectado a la base de datos MongoDB Atlas"))
+  .then(() => console.log("✅ Conectado éxitosamente a la base de datos en MongoDB Atlas"))
   .catch((error) => console.error("❌ Error al conectar a la base de datos:", error));
   
 const PORT = process.env.PORT || 4000;
