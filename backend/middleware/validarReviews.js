@@ -1,5 +1,4 @@
 import { body, validationResult } from 'express-validator';
-import Review from '../models/Review.js';
 
 // Middleware para validar los datos de las reseñas
 
