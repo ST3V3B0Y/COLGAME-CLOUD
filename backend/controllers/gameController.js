@@ -19,7 +19,12 @@ const getGameById = async (req, res) => {
         if (!game) return res.status(404).jason({ message: "Juego no encontrado" });
         res.status(200).json(game);
     } catch (error) {
-        res.status(500).json({ message: "Error al buscar el juego", error });
+        console.error('Error completo:', error);
+        res.status(500).json({ 
+            message: "Error al buscar el juego", 
+            error: error.message,
+            details: error
+        });
     }
 };
 
@@ -30,7 +35,12 @@ const createGame = async (req, res) => {
         const savedGame = await newGame.save();
         res.status(201).json(savedGame);
     } catch (error) {
-        res.status(500).json({ message: "Error al crear el juego", error });
+        console.error('Error completo:', error);
+        res.status(500).json({ 
+            message: "Error al crear el juego", 
+            error: error.message,
+            details: error
+        });
     }
 };
 
@@ -41,8 +51,13 @@ const updateGame = async (req, res) => {
         if (!updateGame) return res.status(404).json({ message: "Juego no encontrado" });
         res.status(200).json(updateGame);
     } catch (error) {
-        res.status(500).json({ message: "Error al actualizar el juego", error });
- }
+        console.error('Error completo:', error);
+        res.status(500).json({ 
+            message: "Error al actualizar el juego", 
+            error: error.message,
+            details: error
+        });
+    }
 }
 
 // Eliminar un juego
@@ -52,7 +67,12 @@ const deleteGame = async (req, res) => {
         if (!deletedGame) return res.status(404).json({ message: "Juego no encontrado" });
         res.status(200).json({ message: "Juego eliminado correctamente" });
     } catch (error) {
-        res.status(500).json({ message: "Error al eliminar el juego", error });
+        console.error('Error completo:', error);
+        res.status(500).json({ 
+            message: "Error al eliminar el juego", 
+            error: error.message,
+            details: error
+        });
     }
 };
 

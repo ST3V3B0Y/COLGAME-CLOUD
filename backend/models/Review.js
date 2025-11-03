@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
 
 const reviewSchema = new mongoose.Schema({
-    juegoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true },
-    puntuacion: { type: Number, min: 1, max: 5, required: true },
+    juegoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true, trim: true },
+    calificacion: { type: Number, min: 1, max: 5, required: true },
     comentario: String,
-    horasJugadas: Number,
-    dificultad: { type: String, enum: ['Facil', 'Medio', 'Dificil'] },
-    recomendaria: { type: Boolean, default: false },
-    fechaCreacion: { type: Date, default: Date.now },
-    fechaActualizacion: { type: Date, default: Date.now }
+    horasJugadas: { type: Number, default: 0, min: 0, max: 10000 },
+    dificultad: { type: String, enum: ['Fácil', 'Normal', 'Difícil'], required: true, trim: true },
+    fechaCreacion: { type: Date, default: Date.now, trim: true },
+    fechaActualizacion: { type: Date, default: Date.now, trim: true }
 });
 
 const Review = mongoose.model('Review', reviewSchema);

@@ -1,5 +1,6 @@
 import express from 'express';
-import { getReview, getReviewById, createReview, updateReview, deleteReview } from '../controllers/reviewController.js';
+import { getReview, getReviewById, getReviewByGameId, createReview, updateReview, deleteReview } from '../controllers/reviewController.js';
+import { validarReview } from '../middleware/validarReviews.js';
 
 const router = express.Router();
 
@@ -9,8 +10,11 @@ router.get('/', getReview);
 // Ruta para obtener una reseña por ID
 router.get('/:id', getReviewById);
 
+// Ruta para obtener una reseña por un juego específico
+router.get('/game/:juegoId', getReviewByGameId);
+
 // Ruta para crear una nueva reseña
-router.post('/', createReview);
+router.post('/', validarReview, createReview);
 
 // Ruta para actualizar una reseña existente
 router.put('/:id', updateReview);
