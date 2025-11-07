@@ -9,8 +9,7 @@ const gameSchema = new mongoose.Schema({
     imagenPortada: String,
     descripcion: String,
     completado: { type: Boolean, default: false },
-    fechaCreacion: { type: Date, default: Date.now }
-});
+}, {timestamps: true});
 
 const Game = mongoose.model('Game', gameSchema);
 

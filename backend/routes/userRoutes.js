@@ -1,11 +1,17 @@
 import express from 'express';
-import { registerUser, loginUser } from '../controllers/userController.js';
-import { body } from 'express-validator';
-import User from '../models/User.js';
+import { registerUser, loginUser, getUsers, getUserById, deleteUser, updateUser, testPassword } from '../controllers/userController.js';
+import { body } from 'express-validator'; 
+import { validarToken } from '../middleware/validarUser.js'
+import { validarAdmin } from '../middleware/validarAdmin.js';
+import { createAdminUser } from '../controllers/authController.js';
+
 
 const router = express.Router();
 
+
+
 // Ruta para registrar un nuevo usuario
+
 router.post('/register', 
     [
         body('nombre').notEmpty().withMessage('El nombre es requerido').isLength({ min: 3 }).withMessage('El nombre debe tener al menos 3 caracteres'),
@@ -25,6 +31,22 @@ router.post('/login',
     loginUser
 );
 
+// -- Rutas reservadas para administrador -- //
 
+router.post('/mkadm', createAdminUser) //
+// Ruta para consultar todos los usuarios
+router.get('/', validarToken, validarAdmin, getUsers)
+//Ruta para consultar usuario por ID
+router.get('/:id', validarToken, validarAdmin, getUserById)
+// Ruta para actualizar un usuario por ID
+router.put('/:id', validarToken, validarAdmin, updateUser)
+// Ruta para eliminar un usuario
+router.delete('/:id', validarToken, validarAdmin, deleteUser)
+
+
+// ---------------------------------------- //
+
+// Ruta temporal para probar contraseñas (NO USAR EN PRODUCCIÓN)
+router.post('/test-password', testPassword);
 
 export default router;

@@ -20,7 +20,7 @@ app.use(morgan("dev")); //Permite ver las peticiones en la consola
 // Rutas
 app.use("/api/games", gameRoutes);
 app.use("/api/reviews", reviewRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api/auth", userRoutes);
 // Fin Rutas
 
 // Conexión a la base de datos MongoDB Atlas

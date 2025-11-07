@@ -55,7 +55,10 @@ const getReviewByGameId = async (req, res) => {
 // Crear una nueva reseña
 const createReview = async (req, res) => {
     try {
-        const newReview = new Review(req.body);
+        const newReview = new Review({
+            ...req.body,
+            usuario: req.user._id
+        });
         const savedReview = await newReview.save();
         res.status(201).json(savedReview);
     } catch (error) {
@@ -71,6 +74,20 @@ const createReview = async (req, res) => {
 // Actualizar una reseña existente
 const updateReview = async (req, res) => {
     try {
+
+        // Comprobar si la reseña existe
+        const rewiew = await Review.findById(req.params.id);
+        if (!rewiew) {
+            return res.status(404).json({ message: "Reseña no encontrada" });
+        }
+
+        // Validar que el usuario que intenta actualizar la reseña es el mismo que la creó
+        if (rewiew.usuario.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: "No tienes permiso para actualizar esta reseña" });
+        }
+
+        // Continuar con la actualización si la validación es exitosa
+
         const updateReview = await Review.findByIdAndUpdate(req.params.id, req.body, { new: true });
         if (!updateReview) return res.status(404).json({ message: "Reseña no encontrada" });
         res.status(200).json(updateReview);
@@ -87,6 +104,19 @@ const updateReview = async (req, res) => {
 // Eliminar una reseña
 const deleteReview = async (req, res) => {
     try {
+        // Comprobar si la reseña existe
+        const rewiew = await Review.findById(req.params.id);
+        if (!rewiew) {
+            return res.status(404).json({ message: "Reseña no encontrada" });
+        }
+
+        // Validar que el usuario que intenta eliminar la reseña es el mismo que la creó
+        if (rewiew.usuario.toString() !== req.user._id && req.user.rol !== 'admin') {
+            return res.status(403).json({ message: "No tienes permiso para eliminar esta reseña" });
+        } 
+
+        // Continuar con la eliminación si la validación es exitosa
+
         const deletedReview = await Review.findByIdAndDelete(req.params.id);
         if (!deletedReview) return res.status(404).json({ message: "Reseña no encontrada" });
         res.status(200).json({ message: "Reseña eliminada correctamente" });

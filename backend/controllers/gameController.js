@@ -12,7 +12,7 @@ const getGames = async (req, res) => {
     }
 };
 
-// Obtener un juego por ID
+// Obtener un juego por ID 
 const getGameById = async (req, res) => {
     try {
         const game = await Game.findById(req.params.id);

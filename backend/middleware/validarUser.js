@@ -10,8 +10,12 @@ export const validarToken = (req, res, next) => {
     }
 
     try {
-        const verified = jwt.verify(token, JWT_SECRET);
-        req.user = verified; // Agregar la información del usuario al objeto de la solicitud
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.user = {
+            id: decoded.id,
+            correo: decoded.correo,
+            rol: decoded.rol
+        }; // Agregar la información del usuario al objeto de la solicitud
         next();
     } catch (error) {
         console.error('Error completo:', error);
@@ -22,13 +26,3 @@ export const validarToken = (req, res, next) => {
         });
     }
 };
-
-// Middleware para validar si el usuario es administrador
-
-// export const validarAdmin = (req, res, next) => {
-//     if (req.user && req.user.role === 'admin') {
-//         next();
-//     } else {
-//         return res.status(403).json({ message: "Acceso denegado. Se requieren privilegios de administrador." });
-//     }
-// };
