@@ -38,8 +38,8 @@ function Home() {
         </div>
       </div>
       <footer className="footer" id="soporte">
-        <p><a href="#">Soporte</a> | <a href="#">Términos y condiciones</a>  | <a href="#">Política de privacidad</a> </p>
-        <p>&copy; 2025 ColGame Cloud. Todos los derechos reservados.</p>
+        <p className="m-auto"><a href="#">Soporte</a> | <a href="#">Términos y condiciones</a>  | <a href="#">Política de privacidad</a> </p>
+        <p className="m-auto">&copy; 2025 ColGame Cloud. Todos los derechos reservados.</p>
       </footer>
     </div>
   )

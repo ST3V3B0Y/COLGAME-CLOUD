@@ -1,7 +1,6 @@
 // Middleware para validar si el usuario es administrador
 export const validarAdmin = (req, res, next) => {
     try {
-        
         if (!req.user) {
             return res.status(401).json({ message: "No se encontró información del usuario en la solicitud." });
         }
