@@ -17,7 +17,7 @@ export const registerUser = async (req, res) => {
             return res.status(400).json({ message: "Todos los campos son obligatorios"})
         }
 
-        // Validar inexistencia de usuario
+        // Validar existencia de usuario
         const existingUser = await User.findOne({ correo });
         if (existingUser) {
             return res.status(400).json({ message: "Usuario ya registrado" });
